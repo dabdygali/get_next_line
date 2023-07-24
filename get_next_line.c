@@ -6,7 +6,7 @@
 /*   By: dabdygal <dabdygal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 10:27:06 by dabdygal          #+#    #+#             */
-/*   Updated: 2023/07/24 11:45:33 by dabdygal         ###   ########.fr       */
+/*   Updated: 2023/07/24 12:54:16 by dabdygal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,18 @@
 char	*get_next_line(int fd)
 {
 	static size_t	current;
+	ssize_t			buflen;
 	char			*line;
+	char			*buf;
 
 	if (BUFFER_SIZE <= 0)
 		return (NULL);
+	buf = malloc(sizeof(char) * BUFFER_SIZE);
+	if (!buf)
+		return (NULL);
+	buflen = 0;
+	buflen = read(fd, buf, BUFFER_SIZE);
+	if (buflen < 0)
+		return (NULL);
+	return (line);
 }

@@ -1,18 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   test.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dabdygal <dabdygal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/24 10:30:33 by dabdygal          #+#    #+#             */
-/*   Updated: 2023/07/24 11:52:36 by dabdygal         ###   ########.fr       */
+/*   Created: 2023/07/24 11:46:47 by dabdygal          #+#    #+#             */
+/*   Updated: 2023/07/24 11:52:40 by dabdygal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include <stdio.h>
+#include "get_next_line.h"
 
-char	*get_next_line(int fd);
-
-#endif
+int	main(void)
+{
+	get_next_line(1);
+	return (0);
+}
