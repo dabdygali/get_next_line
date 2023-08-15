@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: dabdygal <dabdygal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/24 10:30:33 by dabdygal          #+#    #+#             */
-/*   Updated: 2023/07/24 11:52:36 by dabdygal         ###   ########.fr       */
+/*   Created: 2023/07/20 11:51:34 by dabdygal          #+#    #+#             */
+/*   Updated: 2023/08/14 11:27:35 by dabdygal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,6 @@
 # define GET_NEXT_LINE_H
 
 char	*get_next_line(int fd);
+void	*ft_calloc(size_t count, size_t size);
 
 #endif

@@ -5,38 +5,34 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: dabdygal <dabdygal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/24 10:27:06 by dabdygal          #+#    #+#             */
-/*   Updated: 2023/07/24 12:54:16 by dabdygal         ###   ########.fr       */
+/*   Created: 2023/07/20 11:49:33 by dabdygal          #+#    #+#             */
+/*   Updated: 2023/08/14 11:27:32 by dabdygal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
-#include <stdlib.h>
-#include <stdio.h>
+#include "get_next_line.h"
 #ifdef BUFFER_SIZE
-# if BUFFER_SIZE > BUFSIZ
+# if BUFFER_SIZE > 4096
 #  undef BUFFER_SIZE
-#  define BUFFER_SIZE BUFSIZ
+#  define BUFFER_SIZE 4096
 # endif
 #else
-# define BUFFER_SIZE BUFSIZ
+# define BUFFER_SIZE 4096
 #endif
 
 char	*get_next_line(int fd)
 {
-	static size_t	current;
-	ssize_t			buflen;
 	char			*line;
-	char			*buf;
+	static void		*buf;
 
-	if (BUFFER_SIZE <= 0)
+	if (BUFFER_SIZE <= 0 || fd < 0)
 		return (NULL);
-	buf = malloc(sizeof(char) * BUFFER_SIZE);
+	if (!buf)
+		buf = ft_calloc(1, sizeof(char) * BUFFER_SIZE);
 	if (!buf)
 		return (NULL);
-	buflen = 0;
-	buflen = read(fd, buf, BUFFER_SIZE);
-	if (buflen < 0)
+	if (read(fd, buf, BUFFER_SIZE) < 0)
 		return (NULL);
 	return (line);
 }
