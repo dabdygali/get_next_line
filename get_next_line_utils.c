@@ -6,35 +6,34 @@
 /*   By: dabdygal <dabdygal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 17:41:29 by dabdygal          #+#    #+#             */
-/*   Updated: 2023/08/16 10:27:40 by dabdygal         ###   ########.fr       */
+/*   Updated: 2023/08/17 16:30:21 by dabdygal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include <limits.h>
+#include <unistd.h>
 
-void	*ft_calloc(size_t count, size_t size)
+int	cut_n_chars(char **str, ssize_t n, ssize_t len)
 {
-	void	*ptr;
-	size_t	total_size;
+	ssize_t	i;
+	char	*tmp;
 
-	if (count >= INT_MAX && size >= INT_MAX)
-		return (NULL);
-	if (size == 0 || count == 0)
+	if (n == len)
 	{
-		count = 1;
-		size = 1;
+		free(*str);
+		*str = NULL;
+		return (1);
 	}
-	if (count >= ((size_t) - 1) / size)
-		return (NULL);
-	total_size = count * size;
-	ptr = (void *) malloc(total_size);
-	if (!ptr)
-		return (NULL);
-	while (total_size)
+	tmp = (char *) malloc(sizeof(char) * (len - n));
+	if (!tmp)
+		return (-1);
+	i = 0;
+	while (i < (len - n))
 	{
-		total_size--;
-		*(char *)(ptr + total_size) = 0;
+		tmp[i] = (*str)[n + i];
+		i++;
 	}
-	return (ptr);
+	free(*str);
+	*str = tmp;
+	return (1);
 }
