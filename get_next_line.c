@@ -6,7 +6,7 @@
 /*   By: dabdygal <dabdygal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 11:49:33 by dabdygal          #+#    #+#             */
-/*   Updated: 2023/08/17 16:51:54 by dabdygal         ###   ########.fr       */
+/*   Updated: 2023/08/22 12:46:52 by dabdygal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,17 @@
 #else
 # define BUFFER_SIZE 4096
 #endif
-
-static char	*cut_first_line(char **buf, ssize_t len)
+#include <stdio.h>
+static char	*cut_first_line(char **buf, ssize_t *len)
 {
 	char	*line;
 	ssize_t	i;
 	ssize_t	j;
 
 	i = 0;
-	while (i < len && (*buf)[i] != '\n')
+	while (i < *len && (*buf)[i] != '\n')
 		i++;
-	if (i < len)
+	if (i < *len)
 		i += 1;
 	line = (char *) malloc(sizeof(char) * (i + 1));
 	if (!line)
@@ -43,8 +43,10 @@ static char	*cut_first_line(char **buf, ssize_t len)
 		j++;
 	}
 	line[j] = '\0';
-	if (cut_n_chars(buf, i, len) < 0)
+	printf("i is %zi,  len is %zi\n", i, *len);
+	if (cut_n_chars(buf, i, *len) < 0)
 		return (NULL);
+	*len -= i;
 	return (line);
 }
 
@@ -53,6 +55,8 @@ static void	*expand_cat(void *to_expand, size_t explen, void *s, size_t slen)
 	char	*temp;
 	size_t	i;
 
+	if (slen == 0)
+		return (to_expand);
 	temp = malloc(sizeof(char) * (explen + slen));
 	if (!temp)
 		return (NULL);
@@ -67,7 +71,8 @@ static void	*expand_cat(void *to_expand, size_t explen, void *s, size_t slen)
 		((char *)temp)[i] = ((char *)s)[i - explen];
 		i++;
 	}
-	free(to_expand);
+	if (to_expand)
+		free(to_expand);
 	return (temp);
 }
 
@@ -77,6 +82,8 @@ static int	char_present_n(char *buf, char c, ssize_t size)
 
 	if (!buf)
 		return (0);
+	if (size == 0)
+		return (1);
 	i = 0;
 	while (i < size)
 	{
@@ -87,14 +94,12 @@ static int	char_present_n(char *buf, char c, ssize_t size)
 	return (0);
 }
 
-static ssize_t	read_until_eol(void **batch, int fd)
+static ssize_t	read_until_eol(void **batch, int fd, size_t len)
 {
 	ssize_t	bytes_read;
-	size_t	len;
 	void	*buf;
 
-	bytes_read = 0;
-	len = 0;
+	bytes_read = -1;
 	buf = (char *) malloc(sizeof(char) * BUFFER_SIZE);
 	if (!buf)
 		return (-1);
@@ -102,9 +107,10 @@ static ssize_t	read_until_eol(void **batch, int fd)
 	{
 		bytes_read = read(fd, buf, BUFFER_SIZE);
 		if (bytes_read < 0)
+		{
+			free (buf);
 			return (-1);
-		if (bytes_read == 0)
-			return (0);
+		}
 		*batch = expand_cat(*batch, len, buf, bytes_read);
 		if (!batch)
 			return (-1);
@@ -118,17 +124,25 @@ char	*get_next_line(int fd)
 {
 	char			*line;
 	static void		*buf;
-	ssize_t			len;
+	static ssize_t	len;
+	ssize_t			tmp;
 
-	len = 0;
+	tmp = 0;
 	if (BUFFER_SIZE <= 0 || fd < 0)
 		return (NULL);
 	if (!buf)
 	{
-		len = read_until_eol(&buf, fd);
+		len = read_until_eol(&buf, fd, 0);
 		if (len <= 0)
 			return (NULL);
 	}
-	line = cut_first_line((char **) &buf, len);
+	else if (!char_present_n((char *) buf, '\n', len))
+	{
+		tmp = read_until_eol(&buf, fd, len);
+		if (tmp < 0)
+			return (NULL);
+		len += tmp;
+	}
+	line = cut_first_line((char **) &buf, &len);
 	return (line);
 }
