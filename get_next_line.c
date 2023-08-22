@@ -6,7 +6,7 @@
 /*   By: dabdygal <dabdygal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 11:49:33 by dabdygal          #+#    #+#             */
-/*   Updated: 2023/08/22 16:21:26 by dabdygal         ###   ########.fr       */
+/*   Updated: 2023/08/22 16:44:09 by dabdygal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 #else
 # define BUFFER_SIZE 4096
 #endif
-#include <stdio.h>
+
 static char	*cut_first_line(char **buf, ssize_t *len)
 {
 	char	*line;
