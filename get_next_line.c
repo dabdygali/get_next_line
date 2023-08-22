@@ -6,7 +6,7 @@
 /*   By: dabdygal <dabdygal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 11:49:33 by dabdygal          #+#    #+#             */
-/*   Updated: 2023/08/22 12:46:52 by dabdygal         ###   ########.fr       */
+/*   Updated: 2023/08/22 16:21:26 by dabdygal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ static char	*cut_first_line(char **buf, ssize_t *len)
 		j++;
 	}
 	line[j] = '\0';
-	printf("i is %zi,  len is %zi\n", i, *len);
 	if (cut_n_chars(buf, i, *len) < 0)
 		return (NULL);
 	*len -= i;
@@ -141,7 +140,7 @@ char	*get_next_line(int fd)
 		tmp = read_until_eol(&buf, fd, len);
 		if (tmp < 0)
 			return (NULL);
-		len += tmp;
+		len = tmp;
 	}
 	line = cut_first_line((char **) &buf, &len);
 	return (line);
