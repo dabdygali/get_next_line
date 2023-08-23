@@ -6,7 +6,7 @@
 /*   By: dabdygal <dabdygal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 11:49:33 by dabdygal          #+#    #+#             */
-/*   Updated: 2023/08/22 16:44:09 by dabdygal         ###   ########.fr       */
+/*   Updated: 2023/08/23 10:19:56 by dabdygal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include "get_next_line.h"
 #ifdef BUFFER_SIZE
-# if BUFFER_SIZE > 4096
+# if BUFFER_SIZE > 1000000
 #  undef BUFFER_SIZE
 #  define BUFFER_SIZE 4096
 # endif
@@ -107,6 +107,9 @@ static ssize_t	read_until_eol(void **batch, int fd, size_t len)
 		bytes_read = read(fd, buf, BUFFER_SIZE);
 		if (bytes_read < 0)
 		{
+			if (*batch)
+				free(*batch);
+			*batch = NULL;
 			free (buf);
 			return (-1);
 		}
@@ -124,9 +127,7 @@ char	*get_next_line(int fd)
 	char			*line;
 	static void		*buf;
 	static ssize_t	len;
-	ssize_t			tmp;
 
-	tmp = 0;
 	if (BUFFER_SIZE <= 0 || fd < 0)
 		return (NULL);
 	if (!buf)
@@ -137,10 +138,9 @@ char	*get_next_line(int fd)
 	}
 	else if (!char_present_n((char *) buf, '\n', len))
 	{
-		tmp = read_until_eol(&buf, fd, len);
-		if (tmp < 0)
+		len = read_until_eol(&buf, fd, len);
+		if (len < 0)
 			return (NULL);
-		len = tmp;
 	}
 	line = cut_first_line((char **) &buf, &len);
 	return (line);
