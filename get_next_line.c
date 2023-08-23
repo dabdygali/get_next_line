@@ -6,21 +6,13 @@
 /*   By: dabdygal <dabdygal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 11:49:33 by dabdygal          #+#    #+#             */
-/*   Updated: 2023/08/23 10:19:56 by dabdygal         ###   ########.fr       */
+/*   Updated: 2023/08/23 14:48:12 by dabdygal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <stdlib.h>
 #include "get_next_line.h"
-#ifdef BUFFER_SIZE
-# if BUFFER_SIZE > 1000000
-#  undef BUFFER_SIZE
-#  define BUFFER_SIZE 4096
-# endif
-#else
-# define BUFFER_SIZE 4096
-#endif
 
 static char	*cut_first_line(char **buf, ssize_t *len)
 {

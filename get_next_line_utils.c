@@ -6,13 +6,12 @@
 /*   By: dabdygal <dabdygal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 17:41:29 by dabdygal          #+#    #+#             */
-/*   Updated: 2023/08/22 16:44:12 by dabdygal         ###   ########.fr       */
+/*   Updated: 2023/08/23 14:48:18 by dabdygal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <unistd.h>
-#include <limits.h>
 
 int	cut_n_chars(char **str, ssize_t n, ssize_t len)
 {
